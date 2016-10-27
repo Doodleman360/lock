@@ -28,7 +28,9 @@
     
     // have we launched Deep Link Level 1
     if ([item.type isEqualToString:@"com.test.key"]) {
-        [self launchViewController1];
+        [self launchUnlocked];
+    } else {
+        [self launchlocked];
     }
     
     return YES;
@@ -42,7 +44,7 @@
     
     // have we launched Deep Link Level 1
     if ([shortcutItem.type isEqualToString:@"com.test.key"]) {
-        [self launchViewController1];
+        [self launchUnlocked];
     }
     
 }
@@ -61,6 +63,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+     [self launchlocked];
 }
 
 
@@ -73,15 +76,31 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void)launchViewController1 {
+- (void)launchUnlocked {
     
-     NSLog(@"launching view controller 1");
+     NSLog(@"launching unlocked view controller");
     
     // grab our storyboard
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     // and instantiate our navigation controller
     UINavigationController *controller = [storyboard instantiateViewControllerWithIdentifier:@"Unlock"];
+    
+    // make it the key window
+    self.window.rootViewController = controller;
+    [self.window makeKeyAndVisible];
+    
+}
+
+- (void)launchlocked {
+    
+    NSLog(@"launching Locked view controller");
+    
+    // grab our storyboard
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    // and instantiate our navigation controller
+    UINavigationController *controller = [storyboard instantiateViewControllerWithIdentifier:@"Locked"];
     
     // make it the key window
     self.window.rootViewController = controller;

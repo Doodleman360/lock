@@ -41,7 +41,7 @@
     CGPoint location = [recognizer locationInView:self.view];
     
     [UIView animateWithDuration:0.5 animations:^{
-        self.view.alpha = 0.0;
+        //self.view.alpha = 0.0;
         
     }];
     
