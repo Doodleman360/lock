@@ -16,10 +16,36 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    
+    // determine whether we've launched from a shortcut item or not
+    UIApplicationShortcutItem *item = [launchOptions valueForKey:UIApplicationLaunchOptionsShortcutItemKey];
+    if (item) {
+        NSLog(@"We've launched from shortcut item: %@", item.localizedTitle);
+    } else {
+        NSLog(@"We've launched properly.");
+    }
+    
+    // have we launched Deep Link Level 1
+    if ([item.type isEqualToString:@"com.test.key"]) {
+        [self launchViewController1];
+    }
+    
     return YES;
 }
 
+
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
+    
+    // react to shortcut item selections
+    NSLog(@"A shortcut item was pressed. It was %@.", shortcutItem.localizedTitle);
+    
+    // have we launched Deep Link Level 1
+    if ([shortcutItem.type isEqualToString:@"com.test.key"]) {
+        [self launchViewController1];
+    }
+    
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -45,6 +71,22 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)launchViewController1 {
+    
+     NSLog(@"launching view controller 1");
+    
+    // grab our storyboard
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    // and instantiate our navigation controller
+    UINavigationController *controller = [storyboard instantiateViewControllerWithIdentifier:@"Unlock"];
+    
+    // make it the key window
+    self.window.rootViewController = controller;
+    [self.window makeKeyAndVisible];
+    
 }
 
 
